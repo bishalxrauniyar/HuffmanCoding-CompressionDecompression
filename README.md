@@ -1,5 +1,6 @@
 <pre> What is Huffman Coding?
-First of all, let's start with codification in general. When we transmit information, need to convert the data (text, music, video, etc.) into binary code. To do this, we assign a code to each piece of data so we can distinguish them, and decode them later.
+First of all, let's start with codification in general. When we transmit information, need to convert the data (text, music, video, etc.) into binary code.
+To do this, we assign a code to each piece of data so we can distinguish them, and decode them later.
 
 If we take a string as an example, for example 'ABACA', we could assign a same-length code to each one of the unique symbols (usually called naive coding).
 
