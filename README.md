@@ -1,3 +1,5 @@
+<h1>Wamt to try the application ?  </h1>
+https://bishalxrauniyar.github.io/HuffmanCoding-CompressionDecompression/
 <pre> What is Huffman Coding?
 First of all, let's start with codification in general. When we transmit information,
  need to convert the data (text, music, video, etc.) into binary code.
