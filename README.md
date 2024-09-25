@@ -1,4 +1,7 @@
 <h1>Wamt to try the application ?  </h1>
+<h2>File Compression using Huffman Coding algorithm </h2>
+<h2>Pdf Compression</h2>
+<h2>Image Compression </h2>
 https://bishalxrauniyar.github.io/HuffmanCoding-CompressionDecompression/
 <pre> What is Huffman Coding?
 First of all, let's start with codification in general. When we transmit information,
