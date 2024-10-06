@@ -25,17 +25,20 @@ $username = $_SESSION['username'];
 
 <body>
     <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="navbar-brand">
-                <img src="assets/txt-logo.png" alt="logo" width="30" height="30">
-                File Compression Tool!
+        <div class="navbar-brand">
+            <a href="index.php">
+                <img src="assets/logo.png" alt="logo" width="50" height="50">
+                <h1>File Compression Tool</h1>
             </a>
-            <a href="info.html" target="_blank" class="nav-link">About Compression Technique 💡</a>
         </div>
 
-        <!-- Greeting container outside the .container to push it to the right -->
+        <div class="navbar-links">
+            <a href="info.html" target="_blank">About Compression Technique 💡</a>
+        </div>
+
         <div class="greeting-navbar">
-            <p>Welcome, <?php echo htmlspecialchars($username); ?>!</p>
+            <p>Welcome, <b><?php echo htmlspecialchars($username); ?>!</b></p>
+            <a href="logout.php">Logout</a>
         </div>
     </nav>
 
