@@ -26,7 +26,7 @@ $username = $_SESSION['username'];
 <body>
     <nav class="navbar">
         <div class="navbar-brand">
-            <a href="index.php">
+            <a href="home.php">
                 <img src="assets/logo.png" alt="logo" width="50" height="50">
                 <h1>File Compression Tool</h1>
             </a>
