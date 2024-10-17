@@ -33,7 +33,7 @@ $username = $_SESSION['username'];
         </div>
 
         <div class="navbar-links">
-            <a href="info.html" target="_blank">About Compression Technique 💡</a>
+            <a href="info.html" target="_blank">About Compression Technique. </a> <a href="pdf.html" target="_blank">PDF Compressor 💡</a>
         </div>
 
         <div class="greeting-navbar">
