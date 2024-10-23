@@ -5,71 +5,56 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Compress PDF - Smaller PDFs in your browser!</title>
-  <meta name="description"
-    content="Free, In-browser, Privacy friendly PDF Compressor. Your files doesn't leave your browser." />
+  <meta name="description" content="Free, In-browser, Privacy friendly PDF Compressor. Your files don't leave your browser." />
   <link rel="shortcut icon" type="image/x-icon" href="compresspdf-favicon.ico" />
   <link rel="icon" type="image/x-icon" href="compresspdf-favicon.ico" />
+  <link rel="stylesheet" href="css/pdf.css">
   <script defer src="js/pdfkit-standalone-0.10.0.js"></script>
   <script defer src="js/blob-stream-0.1.3.js"></script>
   <script src="js/pdf.min-2.5.207.js"></script>
   <script src="js/FileSaver.min-2.0.4.js"></script>
   <script src="js/sortable.min.1.10.2.js"></script>
-</head>
-
-<body>
+  <script src="js/pdf.js"></script>
   <style>
     body {
       margin: 0;
       background-color: #fefefe;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23ff6347' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+      background-image: url("assets/pdfwallpaper.jpg");
+      background-size: cover;
+      /* Ensure the background image covers the entire page */
+      background-position: center;
+      /* Center the background image */
     }
 
     #main_container {
       height: 100vh;
       display: flex;
+      flex-direction: column;
+      /* Change to column layout for vertical centering */
       justify-content: center;
+      /* Center content vertically */
+      align-items: center;
+      /* Center content horizontally */
       font-family: Consolas, SFMono-Regular, Liberation Mono, Menlo, monospace;
     }
 
-    #pdf_input_container {
-      height: max-content;
-      margin: 10px;
-      align-self: center;
-    }
-
-    #range_container {
-      display: inline-block;
-      height: max-content;
-      align-self: center;
-      margin: 10px;
-    }
-
+    #pdf_input_container,
+    #selected_pdf_container,
+    #range_container,
     #compress_pdf_container {
-      height: max-content;
-      align-self: center;
       margin: 10px;
-    }
-
-    #compress_input_output {
-      display: inline-block;
-      width: 25px;
-      max-width: 25px;
-      margin-left: 5px;
-      margin-right: 5px;
+      /* Space between each section */
+      text-align: center;
+      /* Center align text within each container */
     }
 
     #compress_pdf {
       border: 1px solid rgba(255, 99, 71, 0.5);
       background: rgba(255, 99, 71, 0.2);
-      padding: 5px;
+      padding: 10px 20px;
+      /* Add padding for better button size */
       outline: none;
       animation: none;
-    }
-
-    #selected_pdf_container {
-      height: max-content;
-      margin: 10px;
-      align-self: center;
     }
 
     #pdf_input {
@@ -89,58 +74,9 @@
       transform: translateY(-0.75px);
     }
 
-    .handle {
-      cursor: grab;
-      content: url("res/ic_fluent_drag_24_regular.svg");
-      vertical-align: middle;
-    }
-
-    .list {
-      list-style: none;
-      width: max-content;
-      text-align: center;
-      align-content: center;
-    }
-
-    .ghost-class {
-      background-color: rgba(255, 99, 71, 0.5);
-      border-radius: 5px;
-      width: max-content;
-    }
-
-    @keyframes loading {
-      0% {
-        border: 2px solid #4285f4;
-        color: #4285f4;
-        box-shadow: 0px 1px 10px 1px rgba(66, 133, 244, 0.5);
-      }
-
-      33% {
-        border: 2px solid #db4437;
-        color: #db4437;
-        box-shadow: 0px 1px 10px 1px rgba(219, 68, 55, 0.5);
-      }
-
-      66% {
-        border: 2px solid #f4b400;
-        color: #f4b400;
-        box-shadow: 0px 1px 10px 1px rgba(244, 160, 0, 0.5);
-      }
-
-      100% {
-        border: 2px solid #0f9d58;
-        color: #0f9d58;
-        box-shadow: 0px 1px 10px 1px rgba(15, 157, 88, 0.5);
-      }
-    }
-
     button {
       border-radius: 15px;
       font-family: Consolas, SFMono-Regular, Liberation Mono, Menlo, monospace;
-    }
-
-    button:disabled {
-      color: black;
     }
 
     button:hover {
@@ -148,6 +84,11 @@
       transform: translateY(-0.75px);
     }
   </style>
+</head>
+
+<body>
+  <?php include 'res/header.php'; ?>
+
   <div id="main_container">
     <div id="pdf_input_container">
       <input id="pdf_input" type="file" accept="application/pdf" multiple />
@@ -157,9 +98,7 @@
     </div>
     <div id="range_container">
       <input id="compress_input" title="Compression Ratio" type="range" min="0" max="1" value="0.5" step="0.1" />
-      <p id="compress_input_output" title="Higher the Value, Better the Compression">
-        0.5
-      </p>
+      <p id="compress_input_output" title="Higher the Value, Better the Compression">0.5</p>
     </div>
     <div id="compress_pdf_container">
       <button id="compress_pdf" title="Compress and Combine selected PDF files in Specified order">
@@ -167,9 +106,13 @@
       </button>
     </div>
   </div>
+
   <div style="max-width: 0px; max-height: 0px; overflow: hidden">
     <canvas id="page_canvas"></canvas>
   </div>
+
+
+
 
   <script>
     function setLoading() {
@@ -219,7 +162,7 @@
     var sortable_list = new Sortable(selected_pdf_list, {
       animation: 150,
       ghostClass: "ghost-class",
-      onSort: function (event) {
+      onSort: function(event) {
         updateFileListOnSort(event.to);
       },
     });
@@ -417,7 +360,7 @@
 
       const reader = new FileReader();
 
-      reader.onload = function (e) {
+      reader.onload = function(e) {
         var url = e.target.result;
         pdf2img(url);
       };
@@ -462,7 +405,7 @@
       return new Promise((resolve, reject) => {
         var loadingTask = pdfjsLib.getDocument(url);
         loadingTask.promise.then(
-          function (pdfDoc_) {
+          function(pdfDoc_) {
             pdfDoc = pdfDoc_;
             resetPDFMetaStore(pdfDoc.numPages);
             console.log("PDF Loaded: " + pdfName);
@@ -499,7 +442,7 @@
     function renderPage(num) {
       pageRendering = true;
       // Using promise to fetch the page
-      pdfDoc.getPage(num).then(function (page) {
+      pdfDoc.getPage(num).then(function(page) {
         var viewport = page.getViewport({
           scale: pageScale
         });
@@ -514,7 +457,7 @@
         var renderTask = page.render(renderContext);
 
         // Wait for rendering to finish
-        renderTask.promise.then(function () {
+        renderTask.promise.then(function() {
           data = canvas.toDataURL(pageFormat, pageQuality);
 
           imgData[num] = data;
@@ -557,9 +500,9 @@
     }
 
     function getImgObj(data) {
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
         var img = new Image();
-        img.onload = function () {
+        img.onload = function() {
           resolve(img);
         };
         img.src = data;
@@ -596,12 +539,94 @@
 
       doc.end();
 
-      stream.on("finish", function () {
+      stream.on("finish", function() {
         var output_blob = stream.toBlob("application/pdf");
         saveAs(output_blob, getOutputPdfName());
         onPDFCompressed();
       });
     }
   </script>
+  <?php include 'res/footer.php'; ?>
+  <?php
+  session_start();
+  $servername = "localhost";
+  $username_db = "root"; // Replace with your database username
+  $password_db = ""; // Replace with your database password
+  $dbname = "compression"; // Replace with your database name
+
+  $conn = new mysqli($servername, $username_db, $password_db, $dbname);
+  if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+  }
+
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Get the uploaded file and action type
+    $originalFile = $_FILES['file']['name'];
+    $fileType = strtolower(pathinfo($originalFile, PATHINFO_EXTENSION));
+    $actionType = $_POST['action_type'];
+    $target_dir = "uploads/";
+    $target_file = $target_dir . basename($originalFile);
+
+    // Move the uploaded file to the target directory
+    if (move_uploaded_file($_FILES['file']['tmp_name'], $target_file)) {
+      // Check if the uploaded file is a PDF
+      if ($fileType === 'pdf') {
+        // Insert PDF file into the database
+        insertPDFHistory($conn, $_SESSION['username'], $originalFile);
+        echo json_encode(["success" => true, "message" => "PDF uploaded successfully."]);
+      } else {
+        // Perform compression or decompression for TXT files
+        require_once 'codec.php';
+        $codec = new Codec();
+        if ($actionType === 'compress') {
+          $data = file_get_contents($target_file);
+          list($encoded_data, $message) = $codec->encode($data);
+          $processedFile = "compressed_" . $originalFile;
+          file_put_contents($target_dir . $processedFile, $encoded_data);
+          insertFileHistory($conn, $_SESSION['username'], $originalFile, $processedFile, null);
+        } elseif ($actionType === 'decompress') {
+          $data = file_get_contents($target_file);
+          list($decoded_data, $message) = $codec->decode($data);
+          $processedFile = "decompressed_" . $originalFile;
+          file_put_contents($target_dir . $processedFile, $decoded_data);
+          insertFileHistory($conn, $_SESSION['username'], $originalFile, null, $processedFile);
+        }
+        echo json_encode(["success" => true, "message" => $message]);
+      }
+    } else {
+      echo json_encode(["success" => false, "error" => "Error uploading file."]);
+    }
+  }
+
+  // Function to insert PDF file history into the database
+  function insertPDFHistory($conn, $username, $pdfFile)
+  {
+    $stmt = $conn->prepare("INSERT INTO file_history (username, pdf_file, upload_time) VALUES (?, ?, NOW())");
+    $stmt->bind_param("ss", $username, $pdfFile);
+    if (!$stmt->execute()) {
+      echo json_encode(["success" => false, "error" => $stmt->error]);
+    } else {
+      echo json_encode(["success" => true, "message" => "PDF file history inserted."]);
+    }
+    $stmt->close();
+  }
+
+  // Function to insert TXT file history into the database
+  function insertFileHistory($conn, $username, $originalFile, $compressedFile, $decompressedFile)
+  {
+    $stmt = $conn->prepare("INSERT INTO file_history (username, original_file, compressed_file, decompressed_file, upload_time) VALUES (?, ?, ?, ?, NOW())");
+    $stmt->bind_param("ssss", $username, $originalFile, $compressedFile, $decompressedFile);
+    if (!$stmt->execute()) {
+      echo json_encode(["success" => false, "error" => $stmt->error]);
+    } else {
+      echo json_encode(["success" => true, "message" => "TXT file history inserted."]);
+    }
+    $stmt->close();
+  }
+
+  // Close database connection
+  $conn->close();
+  ?>
 </body>
+
 </html>
