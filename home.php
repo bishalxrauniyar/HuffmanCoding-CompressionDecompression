@@ -1,5 +1,4 @@
 <?php
-// Start session
 session_start();
 
 // Check if the user is logged in, if not redirect them to the login page
@@ -33,7 +32,8 @@ $username = $_SESSION['username'];
         </div>
 
         <div class="navbar-links">
-            <a href="info.html" target="_blank">About Compression Technique. </a> <a href="pdf.html" target="_blank">PDF Compressor 💡</a>
+            <a href="info.html" target="_blank">About Compression Technique</a>
+            <a href="pdf.html" target="_blank">PDF Compressor 💡</a>
         </div>
 
         <div class="greeting-navbar">
@@ -45,9 +45,10 @@ $username = $_SESSION['username'];
     <main class="container">
         <section class="step" id="step1">
             <h2>Step 1: Upload Your File (.txt Only)</h2>
-            <form id="fileform">
-                <input type="file" id="uploadfile" accept=".txt">
-                <button type="button" id="submitbtn" class="btn">Upload</button>
+            <form id="fileform" method="post" enctype="multipart/form-data" action="upload.php">
+                <input type="file" id="uploadfile" name="file" accept=".txt">
+                <input type="hidden" id="action_type" name="action_type">
+                <button type="submit" id="submitbtn" class="btn">Upload</button>
             </form>
         </section>
 
