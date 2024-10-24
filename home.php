@@ -1,30 +1,6 @@
-<?php if (isset($_GET['success'])): ?>
-    <div class="alert alert-success">
-        <?php echo htmlspecialchars($_GET['success']); ?>
-    </div>
-<?php elseif (isset($_GET['error'])): ?>
-    <div class="alert alert-danger">
-        <?php echo htmlspecialchars($_GET['error']); ?>
-    </div>
-<?php endif; ?>
-
 <?php
 // Start session
 session_start();
-
-// Database connection
-$servername = "localhost";
-$username_db = "root"; // Replace with your database username
-$password_db = ""; // Replace with your database password
-$dbname = "compression"; // Replace with your database name
-
-// Create connection
-$conn = new mysqli($servername, $username_db, $password_db, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 // Check if the user is logged in, if not redirect them to the login page
 if (!isset($_SESSION['username'])) {
@@ -40,9 +16,9 @@ $username = $_SESSION['username'];
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Compression Tool</title>
+    <title>Welcome to File Compression Tool</title>
     <link rel="stylesheet" href="style.css">
     <script>
         // MinHeap class for implementing the priority queue used in Huffman encoding
@@ -573,16 +549,14 @@ $username = $_SESSION['username'];
 <body>
     <nav class="navbar">
         <div class="navbar-brand">
-            <a href="home.php" style="text-decoration:none;">
+            <a href="home.php">
+                <img src="assets/logo.png" alt="logo" width="50" height="50">
                 <h1>File Compression Tool</h1>
             </a>
-            <img src="assets/logo.png" alt="logo" width="50" height="50">
         </div>
 
         <div class="navbar-links">
-            <a href="info.php" target="_blank">About Compression Technique</a>
-            <a href="pdf.php" target="_blank">PDF Compressor 💡</a>
-            <a href="history.php">File History</a>
+            <a href="info.html" target="_blank">About Compression Technique. </a> <a href="pdf.html" target="_blank">PDF Compressor 💡</a>
         </div>
 
         <div class="greeting-navbar">
@@ -591,28 +565,29 @@ $username = $_SESSION['username'];
         </div>
     </nav>
 
-    <div class="container">
-        <div class="step">
-            <form id="uploadForm" action="upload_to_db.php" method="post" enctype="multipart/form-data">
-                <h2>File Upload</h2>
-                <input type="file" name="file" required>
-                <select name="action_type" required>
-                    <option value="">Select Action</option>
-                    <option value="compress">Compress</option>
-                    <option value="decompress">Decompress</option>
-                </select>
-                <button type="submit" class="btn">Upload</button>
+    <main class="container">
+        <section class="step" id="step1">
+            <h2>Step 1: Upload Your File (.txt Only)</h2>
+            <form id="fileform">
+                <input type="file" id="uploadfile" accept=".txt">
+                <button type="button" id="submitbtn" class="btn">Upload</button>
             </form>
-        </div>
+        </section>
 
-        <div class="step">
-            <h2>Your Uploads</h2>
-            <p>You can view your upload history <a href="history.php">here</a>.</p>
-        </div>
-    </div>
+        <section class="step" id="step2">
+            <h2>Step 2: Choose an Action</h2>
+            <button type="button" id="encode" class="btn action-btn">Compress</button>
+            <button type="button" id="decode" class="btn action-btn">Decompress</button>
+        </section>
+
+        <section id="feedback" class="step">
+            <h2>Sit Back and Relax</h2>
+            <button class="btn" onclick="location.reload()">Reload</button>
+        </section>
+    </main>
 
     <footer>
-        <p>&copy; <?php echo date("Y"); ?> Compression Tool. All rights reserved.</p>
+        <p>&copy; 2024 File Compression Tool</p>
     </footer>
 </body>
 

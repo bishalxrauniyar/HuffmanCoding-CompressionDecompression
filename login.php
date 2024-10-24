@@ -1,4 +1,6 @@
 <?php
+// login.php
+
 // Start session
 session_start();
 
@@ -23,8 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pass = $_POST['password'];
 
     // Prepare and bind
-    $stmt = $conn->prepare("SELECT password, role FROM user WHERE username = ?");
-    $stmt->bind_param("s", $user);
+    $stmt = $conn->prepare("SELECT * FROM user WHERE username = ? AND password = ?");
+    $stmt->bind_param("ss", $user, $pass);
 
     // Execute statement
     $stmt->execute();
@@ -32,25 +34,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if user exists
     if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        // Verify the password
-        if (password_verify($pass, $row['password'])) {
-            // Set session variables
-            $_SESSION['username'] = $user;
-            $_SESSION['role'] = $row['role']; // Store role in session
-            // Regenerate session ID
-            session_regenerate_id(true);
-
-            // Redirect based on role
-            if ($row['role'] == 'admin') {
-                header("Location: admin_dash.php"); // Redirect admin to admin dashboard
-            } else {
-                header("Location: home.php"); // Redirect user to home
-            }
-            exit();
-        } else {
-            $error = "Invalid username or password";
-        }
+        // Set session variables
+        $_SESSION['username'] = $user;
+        // Redirect to home.php
+        header("Location: home.php");
+        exit();
     } else {
         $error = "Invalid username or password";
     }
@@ -68,107 +56,154 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         body {
-            background-image: url('assets/wallpaper1.jpg');
-            background-size: cover;
-            background-position: center;
+            margin: 0;
             display: flex;
+            /* Use Flexbox */
             justify-content: center;
+            /* Center horizontally */
             align-items: center;
+            /* Center vertically */
             height: 100vh;
+            /* Full viewport height */
             overflow: hidden;
+            /* Prevents scrolling */
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            /* Position it fixed to cover the whole viewport */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('assets/wallpaper.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            filter: blur(8px);
+            /* Adjust the blur amount as needed */
+            z-index: -1;
+            /* Send the pseudo-element behind the login container */
         }
 
         .login-container {
-            background: rgba(255, 255, 255, 0.9);
+            position: relative;
+            /* Allows positioning relative to the parent */
+            background: linear-gradient(145deg, #f1f1f1, #e3e3e3);
+            /* Metallic gradient */
             border-radius: 10px;
-            padding: 40px 30px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s;
+            box-shadow: 20px 20px 60px #d1d1d1,
+                -20px -20px 60px #ffffff;
+            /* Metallic effect */
+            padding: 30px;
+            width: 350px;
+            text-align: center;
+            transition: all 0.3s ease;
+            /* Smooth transition */
         }
 
         .login-container:hover {
-            transform: scale(1.02);
+            box-shadow: 30px 30px 80px #b0b0b0,
+                -30px -30px 80px #ffffff;
+            /* Enhance shadow on hover */
         }
 
-        h2 {
+        .login-container h2 {
             margin-bottom: 20px;
             color: #333;
+            /* Darker text color for contrast */
+            font-family: 'Arial', sans-serif;
         }
 
-        .form-control {
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            border: 1px solid #ced4da;
             transition: border-color 0.3s ease;
+            /* Smooth transition for border color */
+            font-size: 16px;
+            /* Increased font size */
         }
 
-        .form-control:focus {
+        input[type="text"]:focus,
+        input[type="password"]:focus {
             border-color: #007BFF;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            /* Blue border on focus */
+            outline: none;
+            /* Remove default outline */
         }
 
-        .btn-primary {
-            background-color: #007BFF;
+        input[type="submit"] {
+            background: linear-gradient(145deg, #4CAF50, #2e7d32);
+            /* Green gradient */
+            color: white;
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
-            transition: background-color 0.3s, transform 0.2s;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            /* Increased font size */
+            transition: background 0.3s ease, transform 0.2s;
+            /* Smooth transition */
         }
 
-        .btn-primary:hover {
-            background-color: #0056b3;
+        input[type="submit"]:hover {
+            background: linear-gradient(145deg, #45a049, #388e3c);
+            /* Darker green on hover */
             transform: translateY(-2px);
-        }
-
-        .alert {
-            margin-top: 20px;
+            /* Slight lift on hover */
         }
 
         .register-btn {
-            color: #007BFF;
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: linear-gradient(145deg, #007BFF, #0056b3);
+            /* Blue gradient */
+            color: white;
             text-decoration: none;
-            margin-top: 15px;
-            transition: color 0.3s;
+            border-radius: 5px;
+            transition: background 0.3s ease, transform 0.2s;
+            /* Smooth transition */
         }
 
         .register-btn:hover {
-            color: #0056b3;
-            text-decoration: underline;
+            background: linear-gradient(145deg, #0056b3, #003d7a);
+            /* Darker blue on hover */
+            transform: translateY(-2px);
+            /* Slight lift on hover */
+        }
+
+        p {
+            color: red;
         }
     </style>
 </head>
 
 <body>
     <div class="login-container">
-        <h2 class="text-center">Login to Your Account</h2>
+        <h2>Login Page</h2>
         <form method="post" action="">
-            <div class="form-group">
-                <label for="username"><i class="fas fa-user"></i> Username</label>
-                <input type="text" name="username" id="username" class="form-control" placeholder="Enter Username" required>
-            </div>
-            <div class="form-group">
-                <label for="password"><i class="fas fa-lock"></i> Password</label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="Enter Password" required>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Login</button>
+            <input type="text" name="username" placeholder="Username" required><br>
+            <input type="password" name="password" placeholder="Password" required><br>
+            <input type="submit" value="Login">
         </form>
 
         <?php
         if (isset($error)) {
-            echo "<div class='alert alert-danger' role='alert'>$error</div>";
+            echo "<p>$error</p>";
         }
         ?>
 
-        <a class="register-btn" href="register.php">Don't have an account? Register Now</a>
+        <a class="register-btn" href="register.php">Register Now</a>
     </div>
-
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>

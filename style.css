@@ -1,187 +1,171 @@
-/* General Styling */
-body, html {
+/* General styling */
+body {
     margin: 0;
-    padding: 0;
-    height: 100%;
     font-family: 'Arial', sans-serif;
-    background-image: url('assets/bg.jpg'); /* Background image */
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    background-color: #f4f4f9;
     color: #333;
 }
 
 .container {
     width: 90%;
-    max-width: 900px;
-    margin: 20px auto;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.95); /* Slightly transparent background */
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     gap: 20px;
 }
 
-/* Navbar Styling */
+/* Navbar */
 .navbar {
-    background-color: rgba(255, 99, 71, 0.9);
-    padding: 10px 20px;
+    background-color: #34495e;
+    padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
     z-index: 1000;
-    height: 50px; /* Reduced height */
-    transition: background-color 0.3s ease;
-}
-
-.navbar:hover {
-    background-color: rgba(255, 99, 71, 1); /* Solid background on hover */
 }
 
 .navbar-brand {
     display: flex;
     align-items: center;
+    text-decoration: none;
+    color: white;
+}
+
+.navbar-brand img {
+    margin-right: 15px;
 }
 
 .navbar-brand h1 {
-    margin-left: 10px;
-    font-size: 1.8em; /* Smaller font size */
-    color: #fff;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #ecf0f1;
+    margin: 0;
 }
 
-.navbar a {
+.navbar-links {
+    display: flex;
+    gap: 25px;
+}
+
+.navbar-links a {
     color: white;
-    margin-left: 15px;
-    font-size: 1em; /* Adjusted font size for modern look */
+    font-size: 1.2rem;
+    text-decoration: none;
     transition: color 0.3s ease;
 }
 
-.navbar a:hover {
-    color: #FFD700;
+.navbar-links a:hover {
+    color: #f39c12;
 }
 
-/* Form Styling */
-form {
-    width: 100%;
+.greeting-navbar {
     display: flex;
-    flex-direction: column;
     align-items: center;
     gap: 15px;
+    font-size: 1.1rem;
+    color: #ecf0f1;
 }
 
-input[type="file"], select {
-    width: 100%;
-    padding: 10px;
-    font-size: 1em;
-    border: 2px solid #FFA500;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-    transition: border-color 0.3s ease;
-}
-
-input[type="file"]:focus, select:focus {
-    border-color: #FF4500;
-}
-
-select {
-    background-color: white;
-}
-
-/* Button Styling */
-.btn {
-    background-color: rgba(255, 99, 71, 0.8);
-    color: white;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.1em;
+.greeting-navbar p {
+    margin: 0;
     font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    width: 100%; /* Make button full width for modern look */
-    max-width: 200px;
 }
 
-.btn:hover {
-    background-color: rgba(255, 99, 71, 1);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+.greeting-navbar a {
+    padding: 8px 15px;
+    background-color: #e74c3c;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
 }
 
-/* Step Section Styling */
+.greeting-navbar a:hover {
+    background-color: #c0392b;
+}
+
+/* Sections */
 .step {
-    background: rgba(255, 255, 255, 0.9);
+    background: white;
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 100%; /* Make sure step takes full width */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.step:hover {
+    transform: translateY(-5px);
 }
 
 h2 {
-    font-size: 1.8em;
+    font-size: 1.6em;
     color: #2c3e50;
-    margin-bottom: 15px;
 }
 
-/* Footer Styling */
+input[type="file"] {
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* Buttons */
+.btn {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+.action-btn {
+    margin-right: 10px;
+}
+
+/* Footer */
 footer {
     text-align: center;
-    padding: 10px 0;
-    background-color: rgba(44, 62, 80, 0.9);
+    padding: 20px;
+    background-color: #2c3e50;
     color: white;
+    margin-top: 20px;
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    position: sticky;
-    bottom: 0;
 }
 
 footer p {
     margin: 0;
-    font-size: 1em;
 }
 
-/* Responsive Design */
+/* Responsive */
 @media (max-width: 768px) {
     .container {
-        width: 95%;
+        width: 100%;
         padding: 15px;
     }
 
     .navbar {
         flex-direction: column;
-        gap: 5px;
-        height: auto;
+        gap: 10px;
     }
 
-    .navbar-brand h1 {
-        font-size: 1.5em;
-    }
-
-    .navbar a {
-        font-size: 0.9em;
-        margin-left: 0;
-        margin-right: 10px;
-    }
-
-    h2 {
-        font-size: 1.5em;
-    }
-
-    .btn {
-        padding: 10px 20px;
-        max-width: 100%;
+    .navbar-links {
+        flex-direction: column;
+        gap: 10px;
     }
 }

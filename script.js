@@ -290,29 +290,4 @@ window.onload = function () {
         element.click();
         document.body.removeChild(element);
     }
-
-    document.getElementById("uploadForm").onsubmit = function(event) {
-        event.preventDefault(); // Prevent the default form submission
-    
-        const formData = new FormData(this);
-    
-        fetch("upload_to_db.php", {
-            method: "POST",
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert(data.message);
-                // Optionally, refresh the history or display new uploads
-            } else {
-                alert(data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while uploading the file.');
-        });
-    };
-    
 };
